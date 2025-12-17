@@ -238,7 +238,7 @@
 }
 
 .mundo-section .media {
-    grid-column: 1 / span 6;
+    grid-column: 1 / span 7;
 }
 
 .mundo-section .media video {
@@ -296,8 +296,7 @@
     position: relative;
     z-index: 10;
     display: block;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
+    width: 100%;
     padding: 0;
 }
 

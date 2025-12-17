@@ -142,6 +142,13 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
     setSettings({ ...settings, images: newImages });
   };
 
+  const handleVideoChange = (videoId, value) => {
+    const newVideos = (settings.videos || []).map((v) =>
+      v.id === videoId ? { ...v, src: value } : v
+    );
+    setSettings({ ...settings, videos: newVideos });
+  };
+
   const handleReorderEvents = (oldId, newId) => {
     const events = [...(settings.events || [])];
     const oldIndex = events.findIndex((e) => e.id === oldId);
@@ -174,11 +181,14 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
     try {
       const media = await mediaService.uploadMedia(file);
       
-      if (field === "backgroundMediaId") {
-        setSettings({ ...settings, backgroundMediaId: media.id });
-      } else if (field === "logoMediaId") {
-        setSettings({ ...settings, logoMediaId: media.id });
+      // Supprimer l'ancien média si présent
+      if (field === "backgroundMediaId" && settings.backgroundMediaId) {
+        await silentDeleteMedia(settings.backgroundMediaId);
+      } else if (field === "logoMediaId" && settings.logoMediaId) {
+        await silentDeleteMedia(settings.logoMediaId);
       }
+      
+      setSettings({ ...settings, [field]: media.id });
       
       setMessage({ type: "success", text: "Média uploadé avec succès!" });
     } catch (err) {
@@ -195,6 +205,13 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
     setUploading(true);
     try {
       const media = await mediaService.uploadMedia(file);
+      
+      // Supprimer l'ancien média si présent
+      const event = (settings.events || []).find((ev) => ev.id === eventId);
+      if (event?.mediaId) {
+        await silentDeleteMedia(event.mediaId);
+      }
+      
       const newEvents = (settings.events || []).map((ev) =>
         ev.id === eventId ? { ...ev, mediaId: media.id } : ev
       );
@@ -214,6 +231,13 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
     setUploading(true);
     try {
       const media = await mediaService.uploadMedia(file);
+      
+      // Supprimer l'ancien média si présent
+      const image = (settings.images || []).find((img) => img.id === imageId);
+      if (image?.mediaId) {
+        await silentDeleteMedia(image.mediaId);
+      }
+      
       const newImages = (settings.images || []).map((img) =>
         img.id === imageId ? { ...img, mediaId: media.id } : img
       );
@@ -223,6 +247,38 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
       setMessage({ type: "error", text: err.message });
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleDeleteMedia = async (mediaId, field) => {
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer ce média?")) return;
+
+    setUploading(true);
+    try {
+      await mediaService.deleteMedia(mediaId);
+      
+      if (field === "backgroundMediaId") {
+        setSettings({ ...settings, backgroundMediaId: null });
+      } else if (field === "logoMediaId") {
+        setSettings({ ...settings, logoMediaId: null });
+      }
+      
+      setMessage({ type: "success", text: "Média supprimé avec succès!" });
+    } catch (err) {
+      setMessage({ type: "error", text: err.message });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const silentDeleteMedia = async (mediaId) => {
+    try {
+      if (mediaId) {
+        await mediaService.deleteMedia(mediaId);
+      }
+    } catch (err) {
+      // Silencieuse - pas de notification
+      console.error("Erreur lors de la suppression du média:", err);
     }
   };
 
@@ -266,6 +322,15 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                 {medias[settings.backgroundMediaId] && (
                   <p>Fichier: {medias[settings.backgroundMediaId].filename}</p>
                 )}
+                <button
+                  type="button"
+                  className="delete-btn"
+                  onClick={() => handleDeleteMedia(settings.backgroundMediaId, "backgroundMediaId")}
+                  disabled={uploading}
+                  title="Supprimer le média"
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
               </div>
             )}
           </div>
@@ -283,6 +348,15 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                 {medias[settings.logoMediaId] && (
                   <p>Fichier: {medias[settings.logoMediaId].filename}</p>
                 )}
+                <button
+                  type="button"
+                  className="delete-btn"
+                  onClick={() => handleDeleteMedia(settings.logoMediaId, "logoMediaId")}
+                  disabled={uploading}
+                  title="Supprimer le média"
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
               </div>
             )}
           </div>
@@ -343,6 +417,22 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                       onChange={(ev) => handleFileUploadForEvent(ev, e.id)}
                       disabled={uploading}
                     />
+                    <div className="form-group">
+                      <label>Ou sélectionner un média existant:</label>
+                      <select
+                        value={e.mediaId || ""}
+                        onChange={(ev) =>
+                          handleEventChange(e.id, "mediaId", ev.target.value ? Number(ev.target.value) : null)
+                        }
+                      >
+                        <option value="">-- Sélectionner --</option>
+                        {Object.entries(medias).map(([id, media]) => (
+                          <option key={id} value={id}>
+                            {media.filename}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                     {e.mediaId && (
                       <div className="media-info">
                         <p>Media ID: {e.mediaId}</p>
@@ -430,8 +520,14 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
           <h3 style={{ marginTop: "2rem" }}>Vidéos YouTube</h3>
           {(settings.videos || []).map((video) => (
             <div key={video.id} className="form-group">
-              <label>{video.title}</label>
-              <input type="text" value={video.src} disabled />
+              <label>{video.title} <i className="fa-solid fa-ban" style={{ marginLeft: "0.5rem", color: "#999" }} title="Non supprimable"></i></label>
+              <input
+                type="text"
+                value={video.src}
+                onChange={(e) =>
+                  handleVideoChange(video.id, e.target.value)
+                }
+              />
             </div>
           ))}
         </div>

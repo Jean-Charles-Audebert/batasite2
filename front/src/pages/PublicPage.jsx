@@ -4,6 +4,40 @@ import { useState, useEffect } from "react";
 import { contactService } from "../services/api";
 import "./PublicPage.css";
 
+// Convertir n'importe quel format YouTube en URL embed (sans trackers)
+const convertToEmbedUrl = (url) => {
+  if (!url) return "";
+  
+  // Si c'est déjà une URL embed nocookie, retourner telle quelle
+  if (url.includes("youtube-nocookie.com/embed/")) return url;
+  
+  // Si c'est une URL embed normale, la convertir en nocookie
+  if (url.includes("youtube.com/embed/")) {
+    return url.replace("youtube.com/embed/", "youtube-nocookie.com/embed/");
+  }
+  
+  // Format: https://youtu.be/VIDEO_ID
+  const youtubeShortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+  if (youtubeShortMatch) {
+    return `https://www.youtube-nocookie.com/embed/${youtubeShortMatch[1]}`;
+  }
+  
+  // Format: https://www.youtube.com/watch?v=VIDEO_ID
+  const youtubeMatch = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/);
+  if (youtubeMatch) {
+    return `https://www.youtube-nocookie.com/embed/${youtubeMatch[1]}`;
+  }
+  
+  // Format: https://www.youtube.com/watch?v=VIDEO_ID&...
+  const youtubeWithParamsMatch = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/);
+  if (youtubeWithParamsMatch) {
+    return `https://www.youtube-nocookie.com/embed/${youtubeWithParamsMatch[1]}`;
+  }
+  
+  // Si aucun match, retourner l'URL originale (peut-être qu'elle est déjà correcte)
+  return url;
+};
+
 export const PublicPage = () => {
   const { site, loading, error } = useSite();
   const { getMediaUrl } = useMedia();
@@ -286,7 +320,7 @@ export const PublicPage = () => {
                         video.visible && (
                           <div key={video.id} className="video-item">
                             <iframe
-                              src={video.src}
+                              src={convertToEmbedUrl(video.src)}
                               title={video.title}
                               frameBorder="0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

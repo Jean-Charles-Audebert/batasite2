@@ -113,31 +113,28 @@ const seedAdmins = async () => {
    Seed Media
 ---------------------------------- */
 const seedMedia = async () => {
-  const { rows } = await pool.query("SELECT COUNT(*)::int AS count FROM media");
-  if (rows[0].count > 0) {
-    console.log(`✓ Media already seeded (${rows[0].count})`);
-    return;
-  }
-
   console.log("Seeding media...");
 
+  // Truncate la table media et réinitialise les IDs
+  await pool.query("TRUNCATE TABLE media RESTART IDENTITY CASCADE");
+
   await pool.query(`
-    INSERT INTO media (type, filename, mime_type)
+    INSERT INTO media (id, type, filename, mime_type)
     VALUES
-      ('image', 'event1.jpg', 'image/jpeg'),
-      ('image', 'event2.png', 'image/png'),
-      ('image', 'event3.jpg', 'image/jpeg'),
-      ('image', 'photo1.jpeg', 'image/jpeg'),
-      ('image', 'photo2.jpg', 'image/jpeg'),
-      ('image', 'photo3.jpg', 'image/jpeg'),
-      ('image', 'photo4.jpg', 'image/jpeg'),
-      ('image', 'photo5.jpg', 'image/jpeg'),
-      ('image', 'photo6.png', 'image/png'),
-      ('image', 'logo.gif', 'image/gif'),
-      ('image', 'header.svg', 'image/svg+xml');
+      (1, 'image', 'event1.jpg', 'image/jpeg'),
+      (2, 'image', 'event2.jpg', 'image/jpeg'),
+      (3, 'image', 'event3.jpg', 'image/jpeg'),
+      (4, 'image', 'photo1.jpeg', 'image/jpeg'),
+      (5, 'image', 'photo2.jpg', 'image/jpeg'),
+      (6, 'image', 'photo3.jpg', 'image/jpeg'),
+      (7, 'image', 'photo4.jpg', 'image/jpeg'),
+      (8, 'image', 'photo5.jpg', 'image/jpeg'),
+      (9, 'image', 'photo6.png', 'image/png'),
+      (10, 'image', 'logo.gif', 'image/gif'),
+      (11, 'image', 'header.svg', 'image/svg+xml');
   `);
 
-  console.log("✓ Media seeded");
+  console.log("✓ Media seeded with correct IDs");
 };
 
 
