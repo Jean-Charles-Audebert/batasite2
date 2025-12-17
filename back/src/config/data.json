@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "title": "Batala La Rochelle",
+    "description": "Groupe de percussions brésiliennes à La Rochelle"
+  },
+  "theme": {
+    "primaryColor": "#ff6b35",
+    "font": "Poppins"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "hero",
+      "visible": true,
+      "settings": {
+        "backgroundMediaId": 11,
+        "logoMediaId": 10
+      }
+    },
+    {
+      "id": "presentation",
+      "type": "presentation",
+      "visible": true,
+      "settings": {
+        "text": [
+          "Nous appartenons à Batala, groupe international composé de plus de 3000 percussionnistes répartis sur 4 continents ! En 2000, Giba Gonçalves, d'origine bahianaise (NE Brésil), créa notre groupe rochelais avec une quinzaine de membres, qui travaillèrent intensément pour effectuer les premières sorties en public.",
+          "Peu à peu, notre association s'est agrandie, attirant des personnes conquises par cette musique. Aujourd'hui, une cinquantaine de musiciens, de tous âges et de différents horizons, participe à la vie de notre association et assure la promotion de la culture brésilienne.",
+          "Ouverts à tous, nous invitons régulièrement d'autres batucadas et groupes Batala. Nous participons régulièrement à des rencontres inter-batucadas (ex : Nuits Frappées de Bruniquel) pour partager un stage, un week-end convivial, une prestation, un concert …",
+          "Nous sillonnons la France et l'Europe, participons avec énergie et bonne humeur aux animations culturelles de plein air (fêtes de quartiers, carnavals de rue, festivals, évènements sportifs, fêtes communales), mais aussi sur scène ou lors de soirées privées."
+        ]
+      }
+    },
+    {
+      "id": "events",
+      "type": "events",
+      "visible": true,
+      "settings": {
+        "events": [
+          {
+            "id": "event-1",
+            "title": "Téléthon 2025",
+            "description": "Batala La Rochelle jouera à la soirée de soutien au Téléthon samedi 6 décembre à l'Espace Bernard Giraudeau à partir de 18h! Venez nombreux.ses !!!",
+            "mediaId": 1,
+            "position": 1,
+            "visible": true
+          },
+          {
+            "id": "event-2",
+            "title": "Carnaval de Thairé",
+            "description": "Lorem ipsum dolor sit amet.",
+            "mediaId": 2,
+            "position": 2,
+            "visible": true
+          },
+          {
+            "id": "event-3",
+            "title": "Les mimosas à Saint Trojean",
+            "description": "Lorem ipsum dolor sit amet.",
+            "mediaId": 3,
+            "position": 3,
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "mundo",
+      "type": "mundo",
+      "visible": true,
+      "settings": {
+        "text": [
+          "Giba Gonçalves comptait parmi les joueurs de groupes culturels brésiliens originaires de Bahia : les blocos afros Ilê Aiyê, Olodum et Kaoma. Arrivé en Europe, il décide de créer sa propre batucada à Paris en 1997 : Batala.",
+          "Son but premier : mettre des groupes de percussions dans les rues afin de retrouver l'ambiance chaleureuse de sa ville d'origine, Salvador.",
+          "Batala La Rochelle est le second groupe fondé après celui de Paris, puis suivirent d'autres groupes (Portsmouth, Nantes, Bruxelles,…). Depuis, plus de 30 groupes Batala existent à travers le monde, dont cinq en France (Paris, La Rochelle, Nantes, Massif, Gwada), jouant tous les morceaux composés par Giba.",
+          "Batala se produit ainsi dans le monde entier et se réunit au moins trois fois par an, dont voici les trois plus grands évènements (parmi tant d'autres !) :",
+          "Le carnaval de Salvador de Bahia (Brésil), où nous défilons aux côtés du bloco Cortejo Afro depuis 1999. Le carnaval de Nothing Hill (Londres, Angleterre), auquel nous participons depuis 2002. Lors d'un Encontro (signifie « rencontre » en portugais) : l'une des villes où Batala existe organise une rencontre de tous les percussionnistes Batala, réunissant ainsi jusqu'à plus de 300 joueurs défilant dans les rues !"
+        ]
+      }
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "visible": true,
+      "settings": {
+        "images": [
+          {
+            "id": "img-1",
+            "mediaId": 4,
+            "alt": "Batala La Rochelle",
+            "position": 1,
+            "visible": true
+          },
+          {
+            "id": "img-2",
+            "mediaId": 5,
+            "alt": "Batala en extérieur",
+            "position": 2,
+            "visible": true
+          },
+          {
+            "id": "img-3",
+            "mediaId": 6,
+            "alt": "Batala en extérieur",
+            "position": 3,
+            "visible": true
+          },
+          {
+            "id": "img-4",
+            "mediaId": 7,
+            "alt": "Batteur de Batala La Rochelle",
+            "position": 4,
+            "visible": true
+          },
+          {
+            "id": "img-5",
+            "mediaId": 8,
+            "alt": "Batteurs de Batala La Rochelle",
+            "position": 5,
+            "visible": true
+          },
+          {
+            "id": "img-6",
+            "mediaId": 9,
+            "alt": "Batteurs de Batala La Rochelle en extérieur",
+            "position": 6,
+            "visible": true
+          }
+        ],
+        "videos": [
+          {
+            "id": "video-1",
+            "src": "https://www.youtube.com/embed/2WPplCREC1c?rel=0",
+            "title": "Batala La Rochelle en action",
+            "visible": true
+          },
+          {
+            "id": "video-2",
+            "src": "https://www.youtube.com/embed/xbZVTo_9Bfg?rel=0",
+            "title": "Batala La Rochelle en action",
+            "visible": true
+          }
+        ]
+      }
+    }
+  ]
+}

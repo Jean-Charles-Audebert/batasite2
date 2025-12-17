@@ -1,0 +1,29 @@
+.sortable-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  transition: all 0.2s;
+}
+
+.sortable-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+}
+
+.drag-handle {
+  flex-shrink: 0;
+  color: #999;
+  font-weight: bold;
+  cursor: grab;
+  user-select: none;
+  padding: 0.5rem;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
