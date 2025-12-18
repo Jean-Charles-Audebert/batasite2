@@ -59,8 +59,6 @@ services:
     container_name: batasite2_frontend
     depends_on:
       - backend
-    ports:
-      - "80:80"
     networks:
       - batasite2_network
     restart: unless-stopped
