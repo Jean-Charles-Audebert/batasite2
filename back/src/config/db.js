@@ -4,7 +4,7 @@ const fs = require("fs");
 const argon2 = require("argon2");
 
 require("dotenv").config({
-  path: path.resolve(__dirname, "../../.env"),
+  path: path.resolve(__dirname, "../../../.env"),
 });
 
 const pool = new Pool({
