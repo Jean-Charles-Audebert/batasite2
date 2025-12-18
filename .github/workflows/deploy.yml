@@ -1,4 +1,4 @@
-name: Deploy to NAS
+name: Build and Push to Docker Hub
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
   DOCKER_REPO: batasite.2
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -49,43 +49,20 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Deploy to NAS
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.NAS_HOST }}
-          username: ${{ secrets.NAS_SSH_USER }}
-          key: ${{ secrets.NAS_SSH_KEY }}
-          port: ${{ secrets.NAS_SSH_PORT }}
-          script: |
-            cd /volume1/docker/batasite2
-            
-            # Log in to Docker Hub
-            echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-            
-            # Pull latest images
-            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:backend-latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:frontend-latest
-            
-            # Stop and remove old containers
-            docker-compose down
-            
-            # Start new containers with latest images
-            docker-compose up -d
-            
-            # Verify deployment
-            docker-compose ps
-            docker-compose logs --tail 20 backend
-
-      - name: Deployment Status
+      - name: Build Status
         if: success()
         run: |
-          echo "✅ Deployment to NAS completed successfully"
-          echo "App URL: https://batasite2.jc1932.synology.me"
-          echo "Images: ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:backend-latest"
-          echo "Images: ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:frontend-latest"
+          echo "✅ Images built and pushed to Docker Hub successfully"
+          echo "Backend: ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:backend-latest"
+          echo "Frontend: ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:frontend-latest"
+          echo ""
+          echo "Next step on NAS:"
+          echo "cd /volume1/docker/batasite2"
+          echo "docker-compose pull"
+          echo "docker-compose down && docker-compose up -d"
 
-      - name: Deployment Failed
+      - name: Build Failed
         if: failure()
         run: |
-          echo "❌ Deployment failed. Check the logs above."
+          echo "❌ Build failed. Check the logs above."
           exit 1
