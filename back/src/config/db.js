@@ -3,9 +3,8 @@ const path = require("path");
 const fs = require("fs");
 const argon2 = require("argon2");
 
-require("dotenv").config({
-  path: path.resolve(__dirname, "../../../.env"),
-});
+// En dev: dotenv charge le .env (via server.js)
+// En prod Docker: les variables viennent du docker-compose.yml
 
 const pool = new Pool({
   host: process.env.DB_HOST || "localhost",

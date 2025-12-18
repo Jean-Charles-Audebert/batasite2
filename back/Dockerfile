@@ -12,9 +12,6 @@ RUN npm ci --only=production
 # Copy app
 COPY src ./src
 
-# Copy .env
-COPY .env ./
-
 # Expose port
 EXPOSE 5000
 
