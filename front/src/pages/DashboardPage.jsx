@@ -3,6 +3,7 @@ import { useSite } from "../hooks/useSite";
 import { useMedia } from "../hooks/useMedia";
 import { siteService, mediaService } from "../services/api";
 import { DragDropList } from "../components/DragDropList";
+import { AdminsPage } from "./AdminsPage";
 import "./DashboardPage.css";
 
 export const DashboardPage = ({ admin, onLogout }) => {
@@ -11,6 +12,7 @@ export const DashboardPage = ({ admin, onLogout }) => {
   const [selectedSection, setSelectedSection] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [view, setView] = useState('sections'); // 'sections' or 'admins'
 
   const handleSectionClick = (section) => {
     setSelectedSection(section);
@@ -68,16 +70,30 @@ export const DashboardPage = ({ admin, onLogout }) => {
           {site.sections?.map((section) => (
             <button
               key={section.id}
-              className={`section-btn ${selectedSection?.id === section.id ? "active" : ""}`}
-              onClick={() => handleSectionClick(section)}
+              className={`section-btn ${selectedSection?.id === section.id && view === 'sections' ? "active" : ""}`}
+              onClick={() => {
+                handleSectionClick(section);
+                setView('sections');
+              }}
             >
               {section.id.charAt(0).toUpperCase() + section.id.slice(1)}
             </button>
           ))}
+          
+          <hr style={{ margin: '1rem 0', border: 'none', borderTop: '1px solid #ddd' }} />
+          
+          <button
+            className={`section-btn ${view === 'admins' ? "active" : ""}`}
+            onClick={() => setView('admins')}
+          >
+            👥 Admins
+          </button>
         </aside>
 
         <main className="section-editor">
-          {selectedSection ? (
+          {view === 'admins' ? (
+            <AdminsPage />
+          ) : selectedSection ? (
             <SectionEditor
               section={selectedSection}
               onSave={handleSave}

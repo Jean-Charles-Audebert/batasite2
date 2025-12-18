@@ -77,7 +77,7 @@ export const PublicPage = () => {
     setContactMessage("");
 
     try {
-      const response = await contactService.sendContactMessage(
+      await contactService.sendContactMessage(
         contactForm.name,
         contactForm.email,
         contactForm.message

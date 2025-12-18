@@ -114,3 +114,76 @@ export const contactService = {
     return res.json();
   },
 };
+
+/* ----------------------------------
+   Admins Service
+---------------------------------- */
+export const adminsService = {
+  async getAdmins() {
+    const res = await fetch(`${API_URL}/admins`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  async createAdmin(email) {
+    const res = await fetch(`${API_URL}/admins`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
+      credentials: "include",
+      body: JSON.stringify({ email }),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  async toggleAdminActive(id) {
+    const res = await fetch(`${API_URL}/admins/${id}/toggle-active`, {
+      method: "PATCH",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  async verifyToken(token) {
+    const res = await fetch(`${API_URL}/admins/verify-token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  async setPassword(token, password) {
+    const res = await fetch(`${API_URL}/admins/set-password`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, password }),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  async changePassword(adminId, currentPassword, newPassword) {
+    const res = await fetch(`${API_URL}/admins/${adminId}/password`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
+      credentials: "include",
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+};
