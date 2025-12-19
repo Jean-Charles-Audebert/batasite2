@@ -23,6 +23,7 @@ services:
   # Backend API
   backend:
     image: iousco/batasite2:backend-latest
+    pull_policy: always
     container_name: batasite2_backend
     depends_on:
       db:
@@ -67,6 +68,7 @@ services:
   # Frontend (Nginx + React)
   frontend:
     image: iousco/batasite2:frontend-latest
+    pull_policy: always
     container_name: batasite2_frontend
     depends_on:
       - backend
