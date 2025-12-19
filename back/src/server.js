@@ -1,8 +1,11 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+
+// Load env file based on NODE_ENV
+const envFile = process.env.NODE_ENV === "production" ? ".env" : ".env.local";
 require("dotenv").config({
-  path: path.resolve(__dirname, "../.env"),
+  path: path.resolve(__dirname, `../${envFile}`),
 });
 
 const { pool, testConnection, initDb, seedAdmins, seedMedia, seedContent } = require("./config/db");
