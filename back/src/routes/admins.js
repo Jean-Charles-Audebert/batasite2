@@ -3,6 +3,7 @@ const argon2 = require("argon2");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const { pool } = require("../config/db");
+const { frontendUrl } = require("../config/app");
 const router = express.Router();
 
 // Middleware d'authentification
@@ -80,7 +81,7 @@ router.post("/", requireAuth, async (req, res) => {
     );
 
     // Envoyer l'email d'invitation
-    const resetLink = `http://localhost:5173/set-password?token=${resetToken}`;
+    const resetLink = `${frontendUrl}/set-password?token=${resetToken}`;
     
     await transporter.sendMail({
       from: process.env.SMTP_FROM_NOREPLY,

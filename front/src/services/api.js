@@ -1,4 +1,6 @@
-const API_URL = "/api";
+import { API_CONFIG } from "../config/api";
+
+const API_URL = API_CONFIG.BASE_URL;
 
 // Helper pour ajouter le token au header
 const getAuthHeaders = () => {

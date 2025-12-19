@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { mediaService } from "../services/api";
+import { getMediaUrl } from "../config/api";
 
 export const useMedia = () => {
   const [medias, setMedias] = useState({});
@@ -28,7 +29,7 @@ export const useMedia = () => {
       return null;
     }
     const media = medias[mediaId];
-    return `http://localhost:5000${media.url}`;
+    return media.url; // URL relative "/uploads/..." depuis le backend
   };
 
   return { medias, getMediaUrl, loading };
