@@ -1,6 +1,27 @@
 version: '3.8'
 
 services:
+  # Init container - download and copy media files from GitHub
+  init:
+    image: alpine:latest
+    container_name: batasite2_init
+    volumes:
+      - /volume1/docker/batasite2/back/uploads:/uploads
+    command: |
+      sh -c "
+        echo '📥 Downloading media files from GitHub...'
+        apk add --no-cache wget unzip
+        cd /tmp
+        wget -q https://github.com/Jean-Charles-Audebert/batasite2/archive/refs/heads/main.zip
+        unzip -q main.zip
+        mkdir -p /uploads/content
+        cp -r batasite2-main/back/uploads/content/* /uploads/content/ 2>/dev/null || true
+        echo '✅ Media files copied successfully'
+      "
+    networks:
+      - batasite2_network
+    restart: "no"
+
   # PostgreSQL Database
   db:
     image: postgres:16-alpine
@@ -28,6 +49,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      init:
+        condition: service_completed_successfully
     environment:
       NODE_ENV: production
       PORT: 5000
