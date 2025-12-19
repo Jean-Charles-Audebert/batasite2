@@ -9,6 +9,60 @@ const getAuthHeaders = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
+// Wrapper fetch avec gestion automatique du refresh token et redirection login
+export const fetchWithAuth = async (url, options = {}) => {
+  const headers = {
+    ...options.headers,
+    ...getAuthHeaders(),
+  };
+
+  let res = await fetch(url, {
+    ...options,
+    headers,
+    credentials: "include",
+  });
+
+  // Si 401, tenter un refresh et réessayer
+  if (res.status === 401) {
+    try {
+      // Tenter le refresh
+      const refreshRes = await fetch(`${API_URL}/auth/refresh`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (refreshRes.ok) {
+        const { token } = await refreshRes.json();
+        localStorage.setItem("token", token);
+
+        // Réessayer l'appel original avec le nouveau token
+        const newHeaders = {
+          ...options.headers,
+          Authorization: `Bearer ${token}`,
+        };
+
+        res = await fetch(url, {
+          ...options,
+          headers: newHeaders,
+          credentials: "include",
+        });
+      } else {
+        // Refresh échoué, rediriger vers login
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+        throw new Error("Session expired, redirecting to login");
+      }
+    } catch (err) {
+      // Erreur de refresh, rediriger vers login
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+      throw new Error("Session expired, redirecting to login");
+    }
+  }
+
+  return res;
+};
+
 /* ----------------------------------
    Auth Service
 ---------------------------------- */
@@ -52,13 +106,11 @@ export const siteService = {
   },
 
   async updateSection(id, settings, visible) {
-    const res = await fetch(`${API_URL}/site/sections/${id}`, {
+    const res = await fetchWithAuth(`${API_URL}/site/sections/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        ...getAuthHeaders(),
       },
-      credentials: "include",
       body: JSON.stringify({ settings, visible }),
     });
     if (!res.ok) throw new Error(await res.text());
@@ -79,12 +131,8 @@ export const mediaService = {
   async uploadMedia(file) {
     const formData = new FormData();
     formData.append("file", file);
-    const res = await fetch(`${API_URL}/media`, {
+    const res = await fetchWithAuth(`${API_URL}/media`, {
       method: "POST",
-      credentials: "include",
-      headers: {
-        ...getAuthHeaders(),
-      },
       body: formData,
     });
     if (!res.ok) throw new Error(await res.text());
@@ -92,10 +140,8 @@ export const mediaService = {
   },
 
   async deleteMedia(id) {
-    const res = await fetch(`${API_URL}/media/${id}`, {
+    const res = await fetchWithAuth(`${API_URL}/media/${id}`, {
       method: "DELETE",
-      credentials: "include",
-      headers: getAuthHeaders(),
     });
     if (!res.ok) throw new Error(await res.text());
     return res.json();
@@ -122,23 +168,19 @@ export const contactService = {
 ---------------------------------- */
 export const adminsService = {
   async getAdmins() {
-    const res = await fetch(`${API_URL}/admins`, {
+    const res = await fetchWithAuth(`${API_URL}/admins`, {
       method: "GET",
-      headers: getAuthHeaders(),
-      credentials: "include",
     });
     if (!res.ok) throw new Error(await res.text());
     return res.json();
   },
 
   async createAdmin(email) {
-    const res = await fetch(`${API_URL}/admins`, {
+    const res = await fetchWithAuth(`${API_URL}/admins`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...getAuthHeaders(),
       },
-      credentials: "include",
       body: JSON.stringify({ email }),
     });
     if (!res.ok) throw new Error(await res.text());
@@ -146,10 +188,8 @@ export const adminsService = {
   },
 
   async toggleAdminActive(id) {
-    const res = await fetch(`${API_URL}/admins/${id}/toggle-active`, {
+    const res = await fetchWithAuth(`${API_URL}/admins/${id}/toggle-active`, {
       method: "PATCH",
-      headers: getAuthHeaders(),
-      credentials: "include",
     });
     if (!res.ok) throw new Error(await res.text());
     return res.json();
@@ -176,13 +216,11 @@ export const adminsService = {
   },
 
   async changePassword(adminId, currentPassword, newPassword) {
-    const res = await fetch(`${API_URL}/admins/${adminId}/password`, {
+    const res = await fetchWithAuth(`${API_URL}/admins/${adminId}/password`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        ...getAuthHeaders(),
       },
-      credentials: "include",
       body: JSON.stringify({ currentPassword, newPassword }),
     });
     if (!res.ok) throw new Error(await res.text());
