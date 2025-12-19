@@ -15,5 +15,8 @@ COPY src ./src
 # Expose port
 EXPOSE 5000
 
+
+RUN mkdir -p /app/uploads/content
+
 # Start server
 CMD ["node", "src/server.js"]
