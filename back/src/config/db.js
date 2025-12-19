@@ -137,6 +137,9 @@ const seedMedia = async () => {
       (11, 'image', 'header.svg', 'image/svg+xml');
   `);
 
+  // Set sequence to next available ID to avoid conflicts on new uploads
+  await pool.query("SELECT setval('media_id_seq', 12, false)");
+
   console.log("✓ Media seeded with correct IDs");
 };
 
