@@ -90,8 +90,68 @@ const deleteMedia = async (req, res) => {
   }
 };
 
+/* ----------------------------------
+   Update Media
+---------------------------------- */
+const updateMedia = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { type, title, description } = req.body;
+
+    // Check if replacing file
+    if (req.file) {
+      // Get old file info
+      const { rows: oldRows } = await pool.query("SELECT filename FROM media WHERE id = $1", [id]);
+      if (oldRows.length === 0) {
+        return res.status(404).json({ error: "Media not found" });
+      }
+
+      // Delete old file
+      const oldFilename = oldRows[0].filename;
+      const oldFilePath = path.join(__dirname, "../../uploads/content", oldFilename);
+      try {
+        await fs.unlink(oldFilePath);
+      } catch {
+        // File might not exist, continue anyway
+      }
+
+      // Save new file
+      const newFilename = `${crypto.randomBytes(12).toString("hex")}-${Date.now()}${path.extname(
+        req.file.originalname
+      )}`;
+      const UPLOADS_DIR = "/app/uploads/content";
+      const newFilePath = path.join(UPLOADS_DIR, newFilename);
+      await fs.mkdir(path.dirname(newFilePath), { recursive: true });
+      await fs.writeFile(newFilePath, req.file.buffer);
+
+      // Update DB with new file
+      const { rows } = await pool.query(
+        "UPDATE media SET type = $1, filename = $2, mime_type = $3, size = $4 WHERE id = $5 RETURNING *",
+        [type || "image", newFilename, req.file.mimetype, req.file.size, id]
+      );
+
+      return res.json(rows[0]);
+    }
+
+    // Just update metadata
+    const { rows } = await pool.query(
+      "UPDATE media SET type = $1, title = $2, description = $3 WHERE id = $4 RETURNING *",
+      [type || "image", title || null, description || null, id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Media not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   uploadMedia,
   getMedia,
+  updateMedia,
   deleteMedia,
 };
