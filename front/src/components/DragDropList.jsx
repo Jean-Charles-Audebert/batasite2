@@ -1,7 +1,6 @@
 import {
   DndContext,
   closestCenter,
-  KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -33,8 +32,7 @@ export const SortableItem = ({ id, children }) => {
 
 export const DragDropList = ({ items, onReorder }) => {
   const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor)
+    useSensor(PointerSensor)
   );
 
   const handleDragEnd = (event) => {
