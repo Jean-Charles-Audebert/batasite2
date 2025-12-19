@@ -195,6 +195,23 @@
   margin-bottom: 1rem;
 }
 
+/* Allow interaction with form elements inside draggable items */
+.event-editor input,
+.event-editor textarea,
+.event-editor select,
+.image-editor input,
+.image-editor textarea,
+.image-editor select {
+  pointer-events: auto !important;
+}
+
+.event-editor input:focus,
+.event-editor textarea:focus,
+.image-editor input:focus,
+.image-editor textarea:focus {
+  cursor: text;
+}
+
 .media-info {
   font-size: 0.85rem;
   color: #666;
