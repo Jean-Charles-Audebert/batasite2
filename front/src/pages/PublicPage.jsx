@@ -192,7 +192,7 @@ export const PublicPage = () => {
                   <div className="container">
                     <img
                       className="presentation-img"
-                      src="/public/pres_deco.png"
+                      src="/pres_deco.png"
                       alt="Présentation de Batala"
                     />
                     {/* <h2>Qui sommes-nous ?</h2> */}
@@ -209,7 +209,7 @@ export const PublicPage = () => {
                   role="presentation"
                   aria-hidden="true"
                 >
-                  <img src="/public/FOOTER.svg" alt="Décoration présentation" />
+                  <img src="/FOOTER.svg" alt="Décoration présentation" />
                 </section>
               </>
             );
@@ -251,7 +251,7 @@ export const PublicPage = () => {
                   aria-hidden="true"
                 >
                   <video autoPlay muted loop>
-                    <source src="/public/separator_red.mp4" type="video/mp4" />
+                    <source src="/separator_red.mp4" type="video/mp4" />
                   </video>
                 </section>
               </>
@@ -268,7 +268,7 @@ export const PublicPage = () => {
                   <div className="container">
                     <div class="media">
                       <video autoPlay muted loop aria-label="Mundo Batala">
-                        <source src="/public/globe.mp4" type="video/mp4" />
+                        <source src="/globe.mp4" type="video/mp4" />
                       </video>
                     </div>
                     <div className="text-content">
@@ -287,7 +287,7 @@ export const PublicPage = () => {
                 >
                   <video autoPlay muted loop>
                     <source
-                      src="/public/separator_black.mp4"
+                      src="/separator_black.mp4"
                       type="video/mp4"
                     />
                   </video>
@@ -403,7 +403,7 @@ export const PublicPage = () => {
 
       {/* Footer */}
       <footer className="footer">
-        <img src="/public/FOOTER.svg" alt="Footer Batala" className="footer-background" />
+        <img src="/FOOTER.svg" alt="Footer Batala" className="footer-background" />
         <div className="container">
           <nav className="footer-nav">
             <a href="#events" className="nav_link">
