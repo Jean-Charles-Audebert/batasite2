@@ -15,7 +15,9 @@ const uploadMedia = async (req, res) => {
     const filename = `${crypto.randomBytes(12).toString("hex")}-${Date.now()}${path.extname(
       req.file.originalname
     )}`;
-    const filePath = path.join(__dirname, "../../uploads/content", filename);
+
+    const UPLOADS_DIR = "/app/uploads/content";
+    const filePath = path.join(UPLOADS_DIR, filename);
 
     // Ensure directory exists
     await fs.mkdir(path.dirname(filePath), { recursive: true });
