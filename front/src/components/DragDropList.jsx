@@ -23,8 +23,8 @@ export const SortableItem = ({ id, children }) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} className="sortable-item" {...attributes} {...listeners}>
-      <div className="drag-handle">⋮⋮</div>
+    <div ref={setNodeRef} style={style} className="sortable-item" {...attributes}>
+      <div className="drag-handle" {...listeners}>⋮⋮</div>
       {children}
     </div>
   );
