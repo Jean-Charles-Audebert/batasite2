@@ -15,8 +15,12 @@ COPY src ./src
 # Copy initial media files
 COPY uploads ./uploads
 
+# Copy entrypoint script
+COPY entrypoint.sh /app/
+RUN chmod +x /app/entrypoint.sh
+
 # Expose port
 EXPOSE 5000
 
 # Start server
-CMD ["node", "src/server.js"]
+ENTRYPOINT ["/app/entrypoint.sh"]
