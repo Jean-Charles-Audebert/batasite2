@@ -413,6 +413,7 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                       onChange={(ev) =>
                         handleEventChange(e.id, "title", ev.target.value)
                       }
+                      onMouseDown={(ev) => ev.stopPropagation()}
                     />
                   </div>
                   <div className="form-group">
@@ -423,6 +424,7 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                         handleEventChange(e.id, "description", ev.target.value)
                       }
                       rows="3"
+                      onMouseDown={(ev) => ev.stopPropagation()}
                     />
                   </div>
                   <div className="form-group">
@@ -440,6 +442,7 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                         onChange={(ev) =>
                           handleEventChange(e.id, "mediaId", ev.target.value ? Number(ev.target.value) : null)
                         }
+                        onMouseDown={(ev) => ev.stopPropagation()}
                       >
                         <option value="">-- Sélectionner --</option>
                         {Object.entries(medias).map(([id, media]) => (
@@ -466,6 +469,7 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                         onChange={(ev) =>
                           handleEventChange(e.id, "visible", ev.target.checked)
                         }
+                        onMouseDown={(ev) => ev.stopPropagation()}
                       />
                       Visible
                     </label>
@@ -496,6 +500,7 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                       onChange={(e) =>
                         handleImageChange(img.id, "alt", e.target.value)
                       }
+                      onMouseDown={(ev) => ev.stopPropagation()}
                     />
                   </div>
                   <div className="form-group">
@@ -505,6 +510,7 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                       accept="image/*"
                       onChange={(e) => handleFileUploadForImage(e, img.id)}
                       disabled={uploading}
+                      onMouseDown={(ev) => ev.stopPropagation()}
                     />
                     {img.mediaId && (
                       <div className="media-info">
@@ -523,6 +529,7 @@ const SectionEditor = ({ section, onSave, loading, message: msgProp, setMessage,
                         onChange={(e) =>
                           handleImageChange(img.id, "visible", e.target.checked)
                         }
+                        onMouseDown={(ev) => ev.stopPropagation()}
                       />
                       Visible
                     </label>

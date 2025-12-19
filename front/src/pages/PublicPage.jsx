@@ -308,9 +308,15 @@ export const PublicPage = () => {
                     {section.settings.images?.map(
                       (img) =>
                         img.visible && (
-                          <div key={img.id} className="gallery-item">
+                          <a
+                            key={img.id}
+                            className="gallery-item"
+                            href={getMediaUrl(img.mediaId)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             <img src={getMediaUrl(img.mediaId)} alt={img.alt} />
-                          </div>
+                          </a>
                         )
                     )}
                   </div>
