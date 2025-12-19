@@ -12,11 +12,11 @@ RUN npm ci --only=production
 # Copy app
 COPY src ./src
 
+# Copy initial media files
+COPY uploads ./uploads
+
 # Expose port
 EXPOSE 5000
-
-
-RUN mkdir -p /app/uploads/content
 
 # Start server
 CMD ["node", "src/server.js"]
