@@ -12,6 +12,9 @@ RUN npm ci --only=production
 # Copy app
 COPY src ./src
 
+# Copy uploads
+COPY uploads ./uploads
+
 # Expose port
 EXPOSE 5000
 
