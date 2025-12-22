@@ -3,6 +3,8 @@ import { useMedia } from "../hooks/useMedia";
 import { useState, useEffect } from "react";
 import Lottie from "lottie-react";
 import separatorRedAnimation from "../../public/separator_red.json";
+import separatorBlackAnimation from "../../public/separator_black.json";
+import globeAnimation from "../../public/globe.json";
 import { contactService } from "../services/api";
 import "./PublicPage.css";
 
@@ -272,9 +274,12 @@ export const PublicPage = () => {
                 >
                   <div className="container">
                     <div class="media">
-                      <video autoPlay muted loop aria-label="Mundo Batala">
-                        <source src="/globe.mp4" type="video/mp4" />
-                      </video>
+                      <Lottie
+                        animationData={globeAnimation}
+                        loop
+                        autoplay
+                        style={{ width: "100%", height: "auto" }}
+                      />
                     </div>
                     <div className="text-content">
                       <h2>Mundo Batala</h2>
@@ -290,12 +295,12 @@ export const PublicPage = () => {
                   role="presentation"
                   aria-hidden="true"
                 >
-                  <video autoPlay muted loop>
-                    <source
-                      src="/separator_black.mp4"
-                      type="video/mp4"
-                    />
-                  </video>
+                  <Lottie
+                    animationData={separatorBlackAnimation}
+                    loop
+                    autoplay
+                    style={{ width: "100%", height: "auto" }}
+                  />
                 </section>
               </>
             );
