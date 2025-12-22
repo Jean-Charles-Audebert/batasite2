@@ -544,7 +544,7 @@ footer p {
 
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1550px) {
     .separator img {
         margin-top: -5rem;
     }
@@ -568,6 +568,12 @@ footer p {
     .mundo-section .text-content {
         grid-column: auto;
         width: 100%;
+    }
+
+    .mundo-section .media {
+        grid-column: auto;
+        width: 80%;
+        margin: 0 auto;
     }
 
     .events-grid {
