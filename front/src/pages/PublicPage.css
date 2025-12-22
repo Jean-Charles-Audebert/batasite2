@@ -240,11 +240,11 @@
 }
 
 .mundo-section .media {
-    grid-column: 1 / span 6;
+    grid-column: 1 / span 7;
 }
 
 .mundo-section .media video {
-    width: 100%;
+    width: 80%;
     display: block;
 }
 
