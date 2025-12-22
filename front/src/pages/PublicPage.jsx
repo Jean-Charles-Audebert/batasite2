@@ -1,6 +1,8 @@
 import { useSite } from "../hooks/useSite";
 import { useMedia } from "../hooks/useMedia";
 import { useState, useEffect } from "react";
+import Lottie from "lottie-react";
+import separatorRedAnimation from "../../public/separator_red.json";
 import { contactService } from "../services/api";
 import "./PublicPage.css";
 
@@ -250,9 +252,12 @@ export const PublicPage = () => {
                   role="presentation"
                   aria-hidden="true"
                 >
-                  <video autoPlay muted loop>
-                    <source src="/separator_red.mp4" type="video/mp4" />
-                  </video>
+                  <Lottie
+                    animationData={separatorRedAnimation}
+                    loop
+                    autoplay
+                    style={{ width: "100%", height: "auto" }}
+                  />
                 </section>
               </>
             );

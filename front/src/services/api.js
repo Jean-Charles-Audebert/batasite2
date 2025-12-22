@@ -22,6 +22,8 @@ export const fetchWithAuth = async (url, options = {}) => {
     credentials: "include",
   });
 
+  console.log(`📡 ${options.method || 'GET'} ${url}:`, res.status, res.statusText);
+
   // Si 401, tenter un refresh et réessayer
   if (res.status === 401) {
     try {
@@ -58,6 +60,12 @@ export const fetchWithAuth = async (url, options = {}) => {
       window.location.href = "/login";
       throw new Error("Session expired, redirecting to login");
     }
+  }
+
+  if (!res.ok) {
+    const text = await res.text();
+    console.error(`❌ API Error ${res.status}:`, text);
+    throw new Error(`API Error ${res.status}: ${text.substring(0, 100)}`);
   }
 
   return res;
@@ -123,9 +131,33 @@ export const siteService = {
 ---------------------------------- */
 export const mediaService = {
   async getMedia() {
+    console.log(`📡 Fetching ${API_URL}/media`);
     const res = await fetch(`${API_URL}/media`);
-    if (!res.ok) throw new Error(await res.text());
-    return res.json();
+    console.log(`📡 GET ${API_URL}/media:`, res.status, res.statusText);
+    
+    // Récupère le texte brut en premier
+    const text = await res.text();
+    console.log(`📄 Response body:`, text.substring(0, 200)); // Premier 200 caractères
+    
+    if (!res.ok) {
+      console.error(`❌ Media API Error ${res.status}:`, text);
+      throw new Error(`API Error ${res.status}: ${text}`);
+    }
+    
+    // Essaie de parser le JSON
+    if (!text) {
+      console.error("❌ Empty response body");
+      throw new Error("Empty response body from /api/media");
+    }
+    
+    try {
+      const data = JSON.parse(text);
+      console.log("✅ Media data:", data);
+      return data;
+    } catch (parseErr) {
+      console.error("❌ JSON Parse error:", parseErr, "Response was:", text);
+      throw parseErr;
+    }
   },
 
   async uploadMedia(file) {

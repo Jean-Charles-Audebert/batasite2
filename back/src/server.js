@@ -3,7 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 
 // Load env file based on NODE_ENV
-const envFile = process.env.NODE_ENV === "production" ? ".env" : ".env.local";
+const envFile = process.env.NODE_ENV === "test" ? ".env" : ".env.local";
 require("dotenv").config({
   path: path.resolve(__dirname, `../${envFile}`),
 });

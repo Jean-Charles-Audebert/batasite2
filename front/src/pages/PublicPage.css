@@ -9,11 +9,13 @@
 .public-page {
     font-family: "Lithos", sans-serif;
     color: #000000;
+    background-color: #ededed;
 }
 
 .section {
     padding: 4rem 2rem;
     margin: 0 auto;
+    background-color: #ededed;
 }
 
 .header {
@@ -227,8 +229,8 @@
     filter: grayscale(100%);
 }
 
-.event-card h3 {
-    color: #667eea;
+.events-section .event-card h3 {
+    color: #d04445;
     margin-bottom: 0.5rem;
 }
 
@@ -238,7 +240,7 @@
 }
 
 .mundo-section .media {
-    grid-column: 1 / span 7;
+    grid-column: 1 / span 6;
 }
 
 .mundo-section .media video {
