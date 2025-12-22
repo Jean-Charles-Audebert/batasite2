@@ -127,18 +127,21 @@ const seedMedia = async () => {
       (1, 'image', 'event1.jpg', 'image/jpeg'),
       (2, 'image', 'event2.jpg', 'image/jpeg'),
       (3, 'image', 'event3.jpg', 'image/jpeg'),
-      (4, 'image', 'photo1.jpeg', 'image/jpeg'),
-      (5, 'image', 'photo2.jpg', 'image/jpeg'),
-      (6, 'image', 'photo3.jpg', 'image/jpeg'),
-      (7, 'image', 'photo4.jpg', 'image/jpeg'),
-      (8, 'image', 'photo5.jpg', 'image/jpeg'),
-      (9, 'image', 'photo6.png', 'image/png'),
-      (10, 'image', 'logo.gif', 'image/gif'),
-      (11, 'image', 'header.svg', 'image/svg+xml');
+      (4, 'image', 'event4.jpg', 'image/jpeg'),
+      (5, 'image', 'event5.jpg', 'image/jpeg'),
+      (6, 'image', 'event6.jpg', 'image/jpeg'),
+      (7, 'image', 'photo1.jpeg', 'image/jpeg'),
+      (8, 'image', 'photo2.jpg', 'image/jpeg'),
+      (9, 'image', 'photo3.jpg', 'image/jpeg'),
+      (10, 'image', 'photo4.jpg', 'image/jpeg'),
+      (11, 'image', 'photo5.jpg', 'image/jpeg'),
+      (12, 'image', 'photo6.png', 'image/png'),
+      (13, 'image', 'logo.gif', 'image/gif'),
+      (14, 'image', 'header.svg', 'image/svg+xml');
   `);
 
   // Set sequence to next available ID to avoid conflicts on new uploads
-  await pool.query("SELECT setval('media_id_seq', 12, false)");
+  await pool.query("SELECT setval('media_id_seq', 15, false)");
 
   console.log("✓ Media seeded with correct IDs");
 };

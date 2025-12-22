@@ -13,8 +13,8 @@
       "type": "hero",
       "visible": true,
       "settings": {
-        "backgroundMediaId": 11,
-        "logoMediaId": 10
+        "backgroundMediaId": 14,
+        "logoMediaId": 13
       }
     },
     {
@@ -64,7 +64,7 @@
             "id": "event-4",
             "title": "Téléthon 2025",
             "description": "Batala La Rochelle jouera à la soirée de soutien au Téléthon samedi 6 décembre à l'Espace Bernard Giraudeau à partir de 18h! Venez nombreux.ses !!!",
-            "mediaId": 1,
+            "mediaId": 4,
             "position": 4,
             "visible": true
           },
@@ -72,7 +72,7 @@
             "id": "event-5",
             "title": "Carnaval de Thairé",
             "description": "Lorem ipsum dolor sit amet.",
-            "mediaId": 2,
+            "mediaId": 5,
             "position": 5,
             "visible": true
           },
@@ -80,7 +80,7 @@
             "id": "event-6",
             "title": "Les mimosas à Saint Trojean",
             "description": "Lorem ipsum dolor sit amet.",
-            "mediaId": 3,
+            "mediaId": 6,
             "position": 6,
             "visible": true
           }
