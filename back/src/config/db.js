@@ -124,20 +124,20 @@ const seedMedia = async () => {
   await pool.query(`
     INSERT INTO media (id, type, filename, mime_type)
     VALUES
-      (1, 'image', 'event1.jpg', 'image/jpeg'),
-      (2, 'image', 'event2.jpg', 'image/jpeg'),
-      (3, 'image', 'event3.jpg', 'image/jpeg'),
-      (4, 'image', 'event4.jpg', 'image/jpeg'),
-      (5, 'image', 'event5.jpg', 'image/jpeg'),
-      (6, 'image', 'event6.jpg', 'image/jpeg'),
-      (7, 'image', 'photo1.jpeg', 'image/jpeg'),
-      (8, 'image', 'photo2.jpg', 'image/jpeg'),
-      (9, 'image', 'photo3.jpg', 'image/jpeg'),
-      (10, 'image', 'photo4.jpg', 'image/jpeg'),
-      (11, 'image', 'photo5.jpg', 'image/jpeg'),
-      (12, 'image', 'photo6.png', 'image/png'),
-      (13, 'image', 'logo.gif', 'image/gif'),
-      (14, 'image', 'header.svg', 'image/svg+xml');
+      (1, 'image', 'logo.gif', 'image/gif'),
+      (2, 'image', 'header.svg', 'image/svg+xml'),
+      (3, 'image', 'event1.jpg', 'image/jpeg'),
+      (4, 'image', 'event2.jpg', 'image/jpeg'),
+      (5, 'image', 'event3.jpg', 'image/jpeg'),
+      (6, 'image', 'event4.jpg', 'image/jpeg'),
+      (7, 'image', 'event5.jpg', 'image/jpeg'),
+      (8, 'image', 'event6.jpg', 'image/jpeg'),
+      (9, 'image', 'photo1.jpeg', 'image/jpeg'),
+      (10, 'image', 'photo2.jpg', 'image/jpeg'),
+      (11, 'image', 'photo3.jpg', 'image/jpeg'),
+      (12, 'image', 'photo4.jpg', 'image/jpeg'),
+      (13, 'image', 'photo5.jpg', 'image/jpeg'),
+      (14, 'image', 'photo6.png', 'image/png');
   `);
 
   // Set sequence to next available ID to avoid conflicts on new uploads
