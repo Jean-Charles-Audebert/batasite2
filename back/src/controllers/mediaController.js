@@ -16,7 +16,10 @@ const uploadMedia = async (req, res) => {
       req.file.originalname
     )}`;
 
-    const UPLOADS_DIR = "/app/uploads/content";
+    // Chemin adapté à l'environnement
+    const UPLOADS_DIR = process.env.NODE_ENV === "development" 
+      ? path.join(__dirname, "../../uploads/content")
+      : "/app/uploads/content";
     const filePath = path.join(UPLOADS_DIR, filename);
 
     // Ensure directory exists
