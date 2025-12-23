@@ -45,7 +45,7 @@ jobs:
           script: |
             cd /home/debian/batasite2
             echo "🟢 Pulling latest Docker images..."
-            docker-compose pull
+            docker compose pull
             echo "🔄 Restarting containers..."
-            docker-compose up -d --remove-orphans
+            docker compose up -d --remove-orphans
             echo "✅ Deployment finished"

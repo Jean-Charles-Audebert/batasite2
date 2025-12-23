@@ -3,7 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 
 // Load env file based on NODE_ENV
-const envFile = process.env.NODE_ENV === "test" ? ".env" : ".env.local";
+const envFile = process.env.NODE_ENV === "production" ? ".env" : ".env.local";
 require("dotenv").config({
   path: path.resolve(__dirname, `../${envFile}`),
 });
@@ -82,11 +82,13 @@ const start = async () => {
     // Test connection
     await testConnection();
 
-    // Init DB & seed
-    await initDb();
-    await seedAdmins();
-    await seedMedia();
-    await seedContent();
+    if (process.env.NODE_ENV !== "production") {
+      // Init DB & seed (dev only)
+      await initDb();
+      await seedAdmins();
+      await seedMedia();
+      await seedContent();
+    }
 
     // Start listening
     app.listen(PORT, () => {

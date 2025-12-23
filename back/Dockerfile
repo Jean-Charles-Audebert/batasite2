@@ -12,8 +12,8 @@ RUN npm ci --only=production
 # Copy app
 COPY src ./src
 
-# Copy initial media files
-COPY uploads ./uploads
+# Copy initial media files dev only
+# COPY uploads ./uploads
 
 # Copy entrypoint script
 COPY entrypoint.sh /app/
