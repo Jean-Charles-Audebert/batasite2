@@ -153,13 +153,13 @@
         "videos": [
           {
             "id": "video-1",
-            "src": "https://www.youtube.com/embed/2WPplCREC1c?rel=0",
+            "src": "https://www.youtube.com/watch?v=2WPplCREC1c",
             "title": "Batala La Rochelle en action",
             "visible": true
           },
           {
             "id": "video-2",
-            "src": "https://www.youtube.com/embed/xbZVTo_9Bfg?rel=0",
+            "src": "https://www.youtube.com/watch?v=xbZVTo_9Bfg",
             "title": "Batala La Rochelle en action",
             "visible": true
           }

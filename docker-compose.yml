@@ -1,47 +1,24 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  # Init container - download and copy media files from GitHub
-  init:
-    image: alpine:latest
-    container_name: batasite2_init
-    volumes:
-      - /volume1/docker/batasite2/back/uploads:/uploads
-    command: |
-      sh -c "
-        echo '📥 Downloading media files from GitHub...'
-        apk add --no-cache wget unzip
-        cd /tmp
-        wget -q https://github.com/Jean-Charles-Audebert/batasite2/archive/refs/heads/main.zip
-        unzip -q main.zip
-        mkdir -p /uploads/content
-        cp -r batasite2-main/back/uploads/content/* /uploads/content/ 2>/dev/null || true
-        echo '✅ Media files copied successfully'
-      "
-    networks:
-      - batasite2_network
-    restart: "no"
-
-  # PostgreSQL Database
   db:
     image: postgres:16-alpine
     container_name: batasite2_db
     environment:
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ./db_data:/var/lib/postgresql/data
     networks:
       - batasite2_network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U batasite2"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Backend API
   backend:
     image: iousco/batasite2:backend-latest
     pull_policy: always
@@ -49,36 +26,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      init:
-        condition: service_completed_successfully
+    env_file:
+      - .env
     environment:
-      NODE_ENV: production
-      PORT: 5000
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DATABASE_URL: ${DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
-      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
-      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN}
-      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES}
-      REFRESH_TOKEN_EXPIRE_DAYS: ${REFRESH_TOKEN_EXPIRE_DAYS}
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_PORT: ${SMTP_PORT}
-      SMTP_USER: ${SMTP_USER}
-      SMTP_PASS: ${SMTP_PASS}
-      SMTP_FROM_NOREPLY: ${SMTP_FROM_NOREPLY}
-      SMTP_FROM_CONTACT: ${SMTP_FROM_CONTACT}
-      CLIENT_EMAIL: ${CLIENT_EMAIL}
-      ADMIN_EMAIL: ${ADMIN_EMAIL}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
-      SUPER_ADMIN_EMAIL: ${SUPER_ADMIN_EMAIL}
-      SUPER_ADMIN_PASSWORD: ${SUPER_ADMIN_PASSWORD}
+      FRONTEND_URL: ${FRONTEND_URL}
     volumes:
-      - /volume1/docker/batasite2/back/uploads:/app/uploads
+      - ./uploads:/app/uploads
     networks:
       - batasite2_network
     restart: unless-stopped
@@ -88,7 +41,6 @@ services:
       timeout: 10s
       retries: 3
 
-  # Frontend (Nginx + React)
   frontend:
     image: iousco/batasite2:frontend-latest
     pull_policy: always
@@ -100,9 +52,6 @@ services:
     networks:
       - batasite2_network
     restart: unless-stopped
-
-volumes:
-  db_data:
 
 networks:
   batasite2_network:
