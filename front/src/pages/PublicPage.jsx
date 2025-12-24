@@ -50,6 +50,7 @@ export const PublicPage = () => {
     name: "",
     email: "",
     message: "",
+    rgpdConsent: false,
   });
   const [contactLoading, setContactLoading] = useState(false);
   const [contactMessage, setContactMessage] = useState("");
@@ -88,7 +89,7 @@ export const PublicPage = () => {
       );
 
       setContactMessage("✅ Message envoyé avec succès!");
-      setContactForm({ name: "", email: "", message: "" });
+      setContactForm({ name: "", email: "", message: "", rgpdConsent: false });
       setTimeout(() => {
         setIsContactOpen(false);
         setContactMessage("");
@@ -410,6 +411,20 @@ export const PublicPage = () => {
                 required
               />
 
+              <div className="contact-consent">
+                <input
+                  type="checkbox"
+                  id="rgpdConsent"
+                  name="rgpdConsent"
+                  checked={contactForm.rgpdConsent}
+                  onChange={handleContactChange}
+                  required
+                />
+                <label htmlFor="rgpdConsent">
+                  J'accepte que mes données soient collectées et traitées pour
+                  répondre à ma demande
+                </label>
+              </div>
 
               {contactMessage && (
                 <div className="contact-message">{contactMessage}</div>
@@ -417,7 +432,7 @@ export const PublicPage = () => {
 
               <button
                 type="submit"
-                disabled={contactLoading}
+                disabled={contactLoading || !contactForm.rgpdConsent}
               >
                 {contactLoading ? "Envoi..." : "Envoyer"}
               </button>

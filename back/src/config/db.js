@@ -20,6 +20,7 @@ const pool = new Pool({
 const testConnection = async () => {
   try {
     await pool.query("SELECT 1");
+    console.log("✓ Database connection successful");
   } catch (err) {
     console.error("✗ Database connection error", err);
     throw err;
