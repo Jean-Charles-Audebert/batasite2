@@ -635,9 +635,65 @@ footer p {
 }
 
 @media (max-width: 768px) {
+    .section {
+        padding: 2rem 0.5rem;
+        margin: 0;
+    }
+    .section h2 {
+        text-align: left;
+        margin-left: 0;
+        padding-left: 0;
+        font-size: 1.1rem;
+        line-height: 1.2;
+    }
+    .section,
+    .section p,
+    .section li,
+    .section label,
+    .section input,
+    .section textarea {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        font-weight: 400;
+    }
     .events-grid,
     .gallery-grid {
         grid-template-columns: 1fr;
-        justify-content: auto;
+        justify-content: stretch;
+        margin: 0;
+        gap: 1rem;
+    }
+    .gallery-item img {
+        width: 100vw;
+        min-width: 0;
+        height: 45vw;
+        max-height: 60vw;
+        object-fit: cover;
+        margin: 0 -0.5rem;
+    }
+    .videos-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 0;
+    }
+    .video-item iframe {
+        width: 100vw;
+        min-width: 0;
+        height: 56vw;
+        max-width: 100vw;
+        margin: 0 -0.5rem;
+        display: block;
+    }
+    .presentation-section .container,
+    .mundo-section .container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0;
+    }
+    .presentation-section .presentation-img,
+    .mundo-section .media {
+        width: 100vw;
+        max-width: 100vw;
+        margin: 0 -0.5rem 1rem -0.5rem;
     }
 }
