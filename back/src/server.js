@@ -77,7 +77,6 @@ app.use((err, req, res, next) => {
 ---------------------------------- */
 const start = async () => {
   try {
-    console.log("\n🚀 Starting server...\n");
 
     // Test connection
     await testConnection();
@@ -92,8 +91,6 @@ const start = async () => {
 
     // Start listening
     app.listen(PORT, () => {
-      console.log(`\n✓ Server running on http://localhost:${PORT}`);
-      console.log(`✓ API Health: http://localhost:${PORT}/api/health\n`);
     });
   } catch (err) {
     console.error("\n✗ Failed to start server:", err);
@@ -103,7 +100,6 @@ const start = async () => {
 
 // Graceful shutdown
 process.on("SIGTERM", async () => {
-  console.log("\nShutting down gracefully...");
   await pool.end();
   process.exit(0);
 });

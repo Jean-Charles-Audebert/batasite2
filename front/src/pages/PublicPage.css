@@ -464,6 +464,30 @@
     box-sizing: border-box;
 }
 
+.contact-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.contact-consent input[type="checkbox"] {
+    width: auto;
+    min-width: 20px;
+    height: 20px;
+    margin-top: 0.25rem;
+    cursor: pointer;
+    accent-color: #333;
+}
+
+.contact-consent label {
+    margin: 0;
+    font-weight: 400;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
 .contact-modal-content input:focus,
 .contact-modal-content input:focus-visible,
 .contact-modal-content textarea:focus,

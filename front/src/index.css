@@ -21,11 +21,26 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   /* min-width: 320px; */
   min-height: 100vh;
   overflow-x: hidden;
+  width: 100%;
+}
+
+
+html {
+  height: 100%;
+  z-index: 2147483647 !important;
+}
+
+body {
+  z-index: 2147483647 !important;
+  position: relative !important;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
 }
 
 h1 {

@@ -20,7 +20,6 @@ const pool = new Pool({
 const testConnection = async () => {
   try {
     await pool.query("SELECT 1");
-    console.log("✓ Database connection successful");
   } catch (err) {
     console.error("✗ Database connection error", err);
     throw err;
@@ -47,7 +46,6 @@ const initDb = async () => {
     );
   `);
 
-  console.log("✓ Admins table ensured");
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS site (
@@ -60,7 +58,6 @@ const initDb = async () => {
     );
   `);
 
-  console.log("✓ Site table ensured");
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS media (
@@ -73,7 +70,6 @@ const initDb = async () => {
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
-    console.log("✓ Media table ensured");
 };
 
 /* ----------------------------------
@@ -85,11 +81,9 @@ const seedAdmins = async () => {
   );
 
   if (rows[0].count > 0) {
-    console.log(`✓ Admins already seeded (${rows[0].count})`);
     return;
   }
 
-  console.log("Seeding default admins...");
 
   const adminHash = await argon2.hash(process.env.ADMIN_PASSWORD);
   const superAdminHash = await argon2.hash(process.env.SUPER_ADMIN_PASSWORD);
@@ -109,14 +103,12 @@ const seedAdmins = async () => {
     ]
   );
 
-  console.log("✓ Default admins seeded");
 };
 
 /* ----------------------------------
    Seed Media
 ---------------------------------- */
 const seedMedia = async () => {
-  console.log("Seeding media...");
 
   // Truncate la table media et réinitialise les IDs
   await pool.query("TRUNCATE TABLE media RESTART IDENTITY CASCADE");
@@ -143,7 +135,6 @@ const seedMedia = async () => {
   // Set sequence to next available ID to avoid conflicts on new uploads
   await pool.query("SELECT setval('media_id_seq', 15, false)");
 
-  console.log("✓ Media seeded with correct IDs");
 };
 
 

@@ -5,7 +5,6 @@ const API_URL = API_CONFIG.BASE_URL;
 // Helper pour ajouter le token au header
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
-  console.log("🔐 Token from localStorage:", token ? "✓ Found" : "✗ Not found");
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
@@ -22,7 +21,6 @@ export const fetchWithAuth = async (url, options = {}) => {
     credentials: "include",
   });
 
-  console.log(`📡 ${options.method || 'GET'} ${url}:`, res.status, res.statusText);
 
   // Si 401, tenter un refresh et réessayer
   if (res.status === 401) {
@@ -131,13 +129,10 @@ export const siteService = {
 ---------------------------------- */
 export const mediaService = {
   async getMedia() {
-    console.log(`📡 Fetching ${API_URL}/media`);
     const res = await fetch(`${API_URL}/media`);
-    console.log(`📡 GET ${API_URL}/media:`, res.status, res.statusText);
     
     // Récupère le texte brut en premier
     const text = await res.text();
-    console.log(`📄 Response body:`, text.substring(0, 200)); // Premier 200 caractères
     
     if (!res.ok) {
       console.error(`❌ Media API Error ${res.status}:`, text);
@@ -152,7 +147,6 @@ export const mediaService = {
     
     try {
       const data = JSON.parse(text);
-      console.log("✅ Media data:", data);
       return data;
     } catch (parseErr) {
       console.error("❌ JSON Parse error:", parseErr, "Response was:", text);
