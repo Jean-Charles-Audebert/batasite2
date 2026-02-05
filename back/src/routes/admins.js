@@ -1,10 +1,81 @@
+
 const express = require("express");
 const argon2 = require("argon2");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const { pool } = require("../config/db");
 const { frontendUrl } = require("../config/app");
+const { verifyToken, checkSuperAdmin } = require("../middlewares/auth");
 const router = express.Router();
+
+// DELETE /api/admins/:id - Supprimer un admin (superadmin uniquement)
+router.delete("/:id", verifyToken, checkSuperAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    // Ne pas permettre de supprimer un superadmin
+    const { rows } = await pool.query("SELECT role FROM admins WHERE id = $1", [id]);
+    if (!rows.length) {
+      return res.status(404).json({ error: "Admin non trouvé" });
+    }
+    if (rows[0].role === "superadmin") {
+      return res.status(403).json({ error: "Impossible de supprimer un superadmin" });
+    }
+    await pool.query("DELETE FROM admins WHERE id = $1", [id]);
+    res.json({ success: true, message: "Admin supprimé" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+// POST /api/admins/request-password-reset - Demande de renouvellement mot de passe
+router.post("/request-password-reset", async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      return res.status(400).json({ error: "Email invalide" });
+    }
+
+    // Vérifier que l'utilisateur existe
+    const { rows: admins } = await pool.query(
+      "SELECT id, email FROM admins WHERE email = $1",
+      [email]
+    );
+    if (!admins.length) {
+      // Pour la sécurité, ne pas révéler si l'utilisateur existe ou non
+      return res.status(200).json({ success: true, message: "Si l'utilisateur existe, un email a été envoyé." });
+    }
+
+    // Générer un token de reset
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h
+
+    // Mettre à jour l'utilisateur avec le token
+    await pool.query(
+      `UPDATE admins SET password_reset_token = $1, password_reset_expires = $2 WHERE id = $3`,
+      [resetToken, resetExpires, admins[0].id]
+    );
+
+    // Envoyer l'email de reset
+    const resetLink = `${frontendUrl}/set-password?token=${resetToken}`;
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM_NOREPLY,
+      to: email,
+      subject: "Renouvellement de mot de passe - Batala La Rochelle Admin",
+      html: `
+        <h2>Renouvellement de mot de passe</h2>
+        <p>Vous avez demandé à renouveler votre mot de passe.</p>
+        <p><a href="${resetLink}">Cliquez ici pour définir un nouveau mot de passe</a></p>
+        <p>Ce lien expire dans 24 heures.</p>
+      `,
+    });
+
+    res.status(200).json({ success: true, message: "Si l'utilisateur existe, un email a été envoyé." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
 // Middleware d'authentification
 const requireAuth = (req, res, next) => {

@@ -73,6 +73,15 @@ export const fetchWithAuth = async (url, options = {}) => {
    Auth Service
 ---------------------------------- */
 export const authService = {
+    async requestPasswordReset(email) {
+      const res = await fetch(`${API_URL}/admins/request-password-reset`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return res.json();
+    },
   async login(email, password) {
     const res = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
@@ -193,6 +202,13 @@ export const contactService = {
    Admins Service
 ---------------------------------- */
 export const adminsService = {
+    async deleteAdmin(id) {
+      const res = await fetchWithAuth(`${API_URL}/admins/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return res.json();
+    },
   async getAdmins() {
     const res = await fetchWithAuth(`${API_URL}/admins`, {
       method: "GET",

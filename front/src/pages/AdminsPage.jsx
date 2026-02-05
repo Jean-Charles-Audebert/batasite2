@@ -1,14 +1,28 @@
+
 import { useState, useEffect } from "react";
 import { adminsService } from "../services/api";
+import { useAuth } from "../hooks/useAuth";
 import "./AdminsPage.css";
 
+
 export const AdminsPage = () => {
+  const { admin } = useAuth();
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [creatingAdmin, setCreatingAdmin] = useState(false);
+  const handleDeleteAdmin = async (id) => {
+    if (!window.confirm("Supprimer définitivement cet admin ?")) return;
+    try {
+      await adminsService.deleteAdmin(id);
+      setAdmins(admins.filter((a) => a.id !== id));
+      setMessage({ type: "success", text: "Admin supprimé" });
+    } catch (err) {
+      setMessage({ type: "error", text: err.message });
+    }
+  };
 
   useEffect(() => {
     loadAdmins();
@@ -100,6 +114,15 @@ export const AdminsPage = () => {
                     <i className="fa-solid fa-circle-xmark"></i>
                   )}
                 </button>
+                {admin?.role === "superadmin" && (
+                  <button
+                    className="delete-btn"
+                    title="Supprimer admin"
+                    onClick={() => handleDeleteAdmin(a.id)}
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                )}
               </div>
             </div>
           ))
