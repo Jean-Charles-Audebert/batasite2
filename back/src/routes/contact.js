@@ -50,9 +50,10 @@ router.post("/", async (req, res) => {
 
     // Envoi d'un email de confirmation à l'utilisateur
     await transporter.sendMail({
-      from: process.env.CLIENT_EMAIL,
+      from: process.env.SMTP_FROM_NOREPLY,
       to: email,
       subject: "Votre message a bien été reçu",
+      replyTo: process.env.CLIENT_EMAIL,
       html: `
         <h2>Merci pour votre message</h2>
         <p>Bonjour ${name},</p>
