@@ -381,6 +381,13 @@ export const PublicPage = () => {
 
             <h2>Contactez Batala La Rochelle</h2>
 
+            <div className="alert">
+              <strong>Attention :</strong> Si vous souhaitez nous rejoindre, notre effectif est au complet pour l'année en cours. En raison d'un trop grand nombre de demandes, nous ne pourrons pas traiter votre message.
+              <p>Surveillez nos réseaux sociaux pour rester informé des prochains appels à candidatures.</p> 
+              <br />
+              
+            </div>
+
             <form onSubmit={handleContactSubmit}>
               <label htmlFor="name">Nom</label>
               <input
